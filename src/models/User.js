@@ -47,9 +47,10 @@ class User extends Model {
     // Antes de salvar um usuário, vamos criptografar a senha dele
     // E usamos async para trabalharmos com a promise que o bcryptjs gera
     this.addHook('beforeSave', async user => {
-      user.password_hash = await bcryptjs.hash(user.password, 10);
-    })
-
+      if (user.password) { // Se recebermos uma senha, então transforma em hash (vai que em um update o usuário não atualizasse a senha, ele tentaria criptografar null)
+        user.password_hash = await bcryptjs.hash(user.password, 10);
+      }
+    });
     return this;
   }
 }
