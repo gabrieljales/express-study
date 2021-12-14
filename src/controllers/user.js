@@ -3,7 +3,8 @@ const User = require('../models/User');
 exports.create = async (req, res) => {
   try {
     const novoUser = await User.create(req.body); // Tenta criar um user com os dados da requisição
-    return res.json(novoUser);
+    const { id, nome, email } = novoUser; // Objeto com os dados que serão mostrados ao criar um usuário
+    return res.json({ id, nome, email });
 
   } catch (err) {
     return res.status(400).json({
@@ -17,7 +18,7 @@ exports.create = async (req, res) => {
 
 exports.list = async (req, res) => {
   try {
-    const users = await User.findAll(); // todos os users da base de dados
+    const users = await User.findAll({ attributes: ['id', 'nome', 'email'] }); // todos os users da base de dados (porém, somentes esses atributos)
     return res.json(users);
 
   } catch (err) {
@@ -30,7 +31,9 @@ exports.show = async (req, res) => {
   try {
     //const { id } = req.params; // invés de id = req.params.id, usamos destructuring
     const user = await User.findByPk(req.params.id);
-    return res.json(user);
+
+    const { id, nome, email } = user;
+    return res.json({ id, nome, email }); // Retornando somente dados não sensíveis do user
 
   } catch (err) {
     return res.json(null);
@@ -39,13 +42,7 @@ exports.show = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
-    if (!req.params.id) {
-      return res.status(400).json({
-        errors: ['ID não especificado.'],
-      });
-    }
-
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findByPk(req.userId); // userId do middleware loginRequired
 
     if (!user) { // Caso o usuário não exista
       return res.status(400).json({
@@ -53,8 +50,9 @@ exports.update = async (req, res) => {
       });
     }
 
-    const updatedUser = await user.update(req.body); // Atualizando user
-    return res.json(updatedUser);
+    const novosDados = await user.update(req.body); // Atualizando user
+    const { id, nome, email } = novosDados;
+    return res.json({ id, nome, email });
 
   } catch (err) {
     return res.status(400).json({
@@ -63,25 +61,21 @@ exports.update = async (req, res) => {
   }
 };
 
+// OBS: O delete desse projeto permite o usuário se "auto deletar"
+// Em um caso real, seria melhor uma flag "ativo: true || false"
 exports.delete = async (req, res) => {
-  try {
-    if (!req.params.id) {
-      return res.status(400).json({
-        errors: ['ID não especificado.'],
-      });
-    }
 
-    const user = await User.findByPk(req.params.id);
+  try{
+    const user = await User.findByPk(req.userId);
 
     if (!user) {
       return res.status(400).json({
-        errors: ['Usuário não existe.']
+        errors: ['Usuário não existe'],
       });
     }
 
-    await user.destroy();
-    return res.json(user); // Retorna o usuário que foi deletado (NÃO sei se é o correto a se fazer)
-
+    await user.destroy(); // Deleta o user
+    return res.json(null); // Retorna null quando o usuário que foi deletado (NÃO sei se é o correto a se fazer)
   } catch (err) {
     return res.status(400).json({
       errors: err.errors.map((err) => err.message),
