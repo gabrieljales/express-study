@@ -17,5 +17,7 @@ const indexRouter = require('./src/routes/index');
 app.use('/', indexRouter);
 const userRouter = require('./src/routes/user');
 app.use('/users/', userRouter);
+const authRouter = require('./src/routes/auth');
+app.use('/login', authRouter);
 
 module.exports = app;
