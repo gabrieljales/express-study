@@ -53,6 +53,10 @@ class User extends Model {
     });
     return this;
   }
+
+  passwordIsValid(password) { // Método para verificar se a senha é válida (igual a registrada no banco)
+    return bcryptjs.compare(password, this.password_hash); // Retorna uma promise
+  }
 }
 
 module.exports = User;
