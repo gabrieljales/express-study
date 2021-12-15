@@ -51,3 +51,16 @@ module.exports = {
     await queryInterface.dropTable('alunos');
   }
 };
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Comandos e informações úteis do sequelize-cli:
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * * Instalar pacotes necessários - Produção: npm i sequelize pg
+ * * Instalar pacotes necessários - Dev: npm i -D sequelize-cli
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * * Criar uma arquivo migration: npx sequelize migration:create --name=nome-migration
+ * * Fazer as migrações para o banco: npx sequelize db:migrate
+ * * Desfazer ultima migração: npx sequelize db:migrate:undo
+ * * Criar um arquivo de seed: npx sequelize seed:generate --name=nome-seed
+ * * Popular o banco com as seeds: npx sequelize db:seed:all
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
