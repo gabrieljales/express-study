@@ -31,5 +31,6 @@ exports.login = async (req, res) => {
 
   res.json({
     token: token,
+    user: { nome: user.nome, id, email }
   });
 };
