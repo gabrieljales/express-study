@@ -75,7 +75,9 @@ exports.delete = async (req, res) => {
     }
 
     await user.destroy(); // Deleta o user
-    return res.json(null); // Retorna null quando o usuário que foi deletado (NÃO sei se é o correto a se fazer)
+    return res.json({
+      apagado: true, // NÃO sei se é o correto a se fazer (se é melhor retornar um código ou null)
+    });
   } catch (err) {
     return res.status(400).json({
       errors: err.errors.map((err) => err.message),
