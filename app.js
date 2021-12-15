@@ -19,5 +19,7 @@ const userRouter = require('./src/routes/user');
 app.use('/users/', userRouter);
 const authRouter = require('./src/routes/auth');
 app.use('/login', authRouter);
+const studentRouter = require('./src/routes/student');
+app.use('/students', studentRouter);
 
 module.exports = app;
