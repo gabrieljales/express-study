@@ -21,7 +21,7 @@ exports.login = async (req, res) => {
 
   if(!(await user.passwordIsValid(password))) {
     return res.status(401).json({
-      errors: ['Senha inválida'],
+      errors: ['Senha inválida, tente novamente!'],
     });
   }
   const { id } = user;
