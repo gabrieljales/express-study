@@ -1,7 +1,6 @@
 const User = require('../models/User')
 const jwt = require('jsonwebtoken');
 
-// Talvez um nome melhor seria login
 exports.login = async (req, res) => {
   const { email = '', password = '' } = req.body; // Pegando email e senha (valor padrão vazio)
 
